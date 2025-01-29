@@ -1,0 +1,13 @@
+.eggs
+.cache
+.python-version
+.idea
+*.pyc
+*.dist-info
+.coverage
+*.egg-info
+/.tox
+/dist
+/.*_cache
+/pip-wheel-metadata
+/build
