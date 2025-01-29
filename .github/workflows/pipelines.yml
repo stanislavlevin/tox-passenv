@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    branches: [ main ]
+  schedule:
+    - cron: '0 7 * * 1-5'
+
+jobs:
+  lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        allow-prereleases: true
+    - name: Install dependencies
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        python -m pip install \
+          pylint \
+          black \
+          pytest \
+
+        # to pull runtime dependencies
+        python -m pip install .
+
+    - name: Pylint
+      run: |
+        python -m pylint -v --rcfile=pyproject.toml .
+    - name: Black
+      run: |
+        python -m black -v --check --diff .
+
+  unit_tests:
+    name: Run unit tests
+    needs: [lint]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        allow-prereleases: true
+    - name: Install host dependencies and project
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        python -m pip install \
+          pytest \
+          pytest-cov \
+          setuptools \
+          wheel \
+
+        python -m pip install .
+
+    - name: Unit tests with coverage
+      run: |
+        pytest -vra --cov --cov-config=pyproject.toml tests/
+
+  unit_tests_tox3:
+    name: Run tests for compatibility with tox3
+    needs: [lint]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        allow-prereleases: true
+    - name: Install host dependencies and project
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        python -m pip install \
+          pytest \
+
+        python -m pip install 'tox < 4' .
+
+    - name: Unit tests for compatibility with tox3
+      run: |
+        pytest -vra tests/
