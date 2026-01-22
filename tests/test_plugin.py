@@ -64,9 +64,7 @@ def test_plugin_usage(tox_project, monkeypatch, passenv_data):
 
     command_template = f"python -c 'import os;{env_vars_commands}'"
 
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
@@ -145,9 +143,7 @@ def test_no_plugin_usage(tox_project, monkeypatch, passenv_data):
 
     command_template = f"python -c 'import os;{env_vars_commands}'"
 
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]
@@ -196,9 +192,7 @@ def test_no_plugin_usage_tox3(tox_project, monkeypatch):
 
     command_template = f"python -c 'import os;{env_vars_commands}'"
 
-    project.contents[
-        "tox.ini"
-    ] = f"""\
+    project.contents["tox.ini"] = f"""\
         [tox]
         env_list = {env_name}
         [testenv]

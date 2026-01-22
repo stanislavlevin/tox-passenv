@@ -3,7 +3,6 @@ import os
 
 from tox.plugin import impl
 
-
 logger = logging.getLogger(__name__)
 
 
