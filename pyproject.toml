@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tox-passenv"
 description = "Additional environment variable names to pass into tox test env"
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 dependencies = [
   "tox >= 3",
 ]
@@ -30,7 +30,6 @@ classifiers = [
   "Topic :: Utilities",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
